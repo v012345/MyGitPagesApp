@@ -1,16 +1,21 @@
 <template>
 	<view class="content">
 
-		<uni-card title="Title Text" thumbnail="" extra="Extra Information" note="Tips">
-			The body of the content, you can customize the content and style
-		</uni-card> <!-- <Directory></Directory> -->
+
+		<button @click="showDrawer" type="primary">右侧弹出 显示Drawer</button>
+		<uni-drawer ref="showRight" mode="right" :mask-click="false">
+			<scroll-view style="height: 100%;" scroll-y="true">
+				<button @click="closeDrawer" type="primary">关闭Drawer</button>
+				<view v-for="item in 60" :key="item">可滚动内容 {{ item }}</view>
+			</scroll-view>
+		</uni-drawer>
+
 	</view>
 
 
 </template>
 
 <script>
-	import Directory from "@/components/Directory/index.vue";
 	export default {
 		data() {
 			return {
@@ -18,13 +23,18 @@
 			}
 		},
 		components: {
-			Directory,
+
 		},
 		onLoad() {
 
 		},
 		methods: {
-
+			showDrawer() {
+				this.$refs.showRight.open();
+			},
+			closeDrawer() {
+				this.$refs.showRight.close();
+			}
 		}
 	}
 </script>
