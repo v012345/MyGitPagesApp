@@ -28,6 +28,9 @@
 		onLoad() {
 
 		},
+		onNavigationBarButtonTap(e) {
+			console.log(e)
+		},
 		methods: {
 			showDrawer() {
 				this.$refs.showRight.open();
