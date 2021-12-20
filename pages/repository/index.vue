@@ -11,8 +11,8 @@
 				<uni-card title="notebook" :isFull="true" sub-title="v012345"
 					thumbnail="https://avatars.githubusercontent.com/v012345">
 					<image class="cover"
-						src="https://raw.githubusercontent.com/v012345/notebook/master/assets/cover.png"
-						mode="widthFix"></image>
+						src="https://raw.githubusercontent.com/v012345/notebook/master/assets/cover.png" mode="widthFix"
+						@error="imageError"></image>
 					<view slot="actions" class="card-actions">
 						<view class="card-actions-item" @click="actionsClick('点赞')">
 							<uni-icons type="star" size="18" color="#999"></uni-icons>
@@ -31,9 +31,14 @@
 
 <script>
 	export default {
+		data() {
+			return {
+
+			}
+		},
 		onNavigationBarButtonTap() {
 			// console.log(e)
-			this.open();
+			this.$refs.popup.open()
 		},
 		onLoad() {
 			try {
@@ -66,7 +71,9 @@
 			}, 1000);
 		},
 		methods: {
-
+			imageError: function(e) {
+				console.error('image发生error事件，携带值为' + e.detail.errMsg)
+			},
 			actionsClick() {},
 			open() {
 				this.$refs.popup.open()
@@ -86,10 +93,30 @@
 			 * @param {Object} value
 			 */
 			confirm(value) {
-				// 输入框的值
-				console.log(value)
-				// TODO 做一些其他的事情，手动执行 close 才会关闭对话框
-				// ...
+				let result = value.match(/^(?:(?:http(?:s)?:\/\/)?github.com\/)?([\w-]+)\/([\w-]+)$/mi)
+				if (!result) {
+					uni.showToast({
+						title: '不合法地址',
+						duration: 1500,
+						icon: "error"
+					});
+					return
+				}
+				uni.request({
+						url: `https://api.github.com/users/${result[1]}`,
+						header: {
+							'Accept': 'application/vnd.github.v3+json' //自定义请求头信息
+						}
+					})
+					.then(data => {
+						// data为一个数组
+						// 数组第一项为错误信息 即为 fail 回调
+						// 第二项为返回数据
+						var [err, res] = data;
+						console.log(res.data);
+					})
+				console.log(result[1])
+				console.log(result[2])
 				this.$refs.popup.close()
 			}
 		}
@@ -118,8 +145,6 @@
 				height: 45px;
 				border-top: 1px #eee solid;
 
-
-
 				.card-actions-item {
 					display: flex;
 					flex-direction: row;
@@ -130,18 +155,8 @@
 						color: #666;
 						margin-left: 5px;
 					}
-
-
 				}
 			}
-
-
-
-
-
-
-
-
 		}
 	}
 </style>
