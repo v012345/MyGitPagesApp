@@ -3,13 +3,19 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "阅读"
 			}
 		},
 		{
-			"path":"pages/profile/index",
-			"style":{
-				"navigationBarTitleText":"profile"
+			"path": "pages/repository/index",
+			"style": {
+				"navigationBarTitleText": "仓库"
+			}
+		},
+		{
+			"path": "pages/setting/index",
+			"style": {
+				"navigationBarTitleText": "设置"
 			}
 		}
 	],
@@ -18,5 +24,31 @@
 		"navigationBarTitleText": "notebook",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#3cc51f",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"height": "50px",
+		"fontSize": "10px",
+		"iconWidth": "24px",
+		"spacing": "3px",
+		"list": [{
+			"pagePath": "pages/index/index",
+			"iconPath": "static/tabBarIcons/markdown-icon.png",
+			"selectedIconPath": "static/tabBarIcons/markdown-actived-icon.png",
+			"text": "查看"
+		}, {
+			"pagePath": "pages/repository/index",
+			"iconPath": "static/tabBarIcons/git-icon.png",
+			"selectedIconPath": "static/tabBarIcons/git-actived-icon.png",
+			"text": "仓库"
+		}, {
+			"pagePath": "pages/setting/index",
+			"iconPath": "static/tabBarIcons/setting-icon.png",
+			"selectedIconPath": "static/tabBarIcons/setting-actived-icon.png",
+			"text": "设置"
+		}]
 	}
 }
