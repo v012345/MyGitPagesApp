@@ -26,7 +26,9 @@
 
 		},
 		onLoad() {
-
+			// var dayjs = require("dayjs")
+			// var now = this.$dayjs()
+			// console.log(now)
 		},
 		onNavigationBarButtonTap(e) {
 			console.log(e)

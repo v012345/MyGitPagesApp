@@ -2,8 +2,10 @@ import App from './App'
 
 // #ifndef VUE3
 import Vue from 'vue'
-Vue.config.productionTip = false
-Vue.prototype.$api = "https://api.github.com"
+import dayjs from 'dayjs'
+Vue.config.productionTip = false;
+Vue.prototype.$api = "https://api.github.com";
+Vue.prototype.$dayjs = dayjs;
 App.mpType = 'app'
 const app = new Vue({
     ...App
