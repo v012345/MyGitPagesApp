@@ -1,0 +1,23 @@
+{
+  "name": "mygitpages",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/v012345/MyGitPagesApp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/v012345/MyGitPagesApp/issues"
+  },
+  "homepage": "https://github.com/v012345/MyGitPagesApp#readme",
+  "dependencies": {
+    "dayjs": "^1.10.7"
+  }
+}
