@@ -5,6 +5,9 @@
 			<uni-popup-dialog title="例如:v012345/notebook" mode="input" message="成功消息" :duration="2000"
 				:before-close="true" @close="close" @confirm="confirm" placeholder="用户名/仓库名"></uni-popup-dialog>
 		</uni-popup>
+		<view v-for="a,b,c in notebooks">
+			{{a}}{{b}}{{c}}
+		</view>
 
 		<view class="book-shelf">
 			<view class="booknote" v-for="i in 9" :key="i">
@@ -32,37 +35,18 @@
 <script>
 	export default {
 		data() {
-			return {
 
+			return {
+				notebooks: uni.getStorageSync("notebooks") || {},
 			}
 		},
 		onNavigationBarButtonTap() {
-			// console.log(e)
 			this.$refs.popup.open()
+
 		},
 		onLoad() {
-			try {
-				const value = uni.getStorageSync('notebooks');
-				console.log(value);
-				if (value) {
-					console.log(value);
-				}
-			} catch (e) {
-				console.log(e);
-				// error
-			}
 			uni.startPullDownRefresh();
-
-			// uni.request({
-			// 		url: 'https://www.example.com/request'
-			// 	})
-			// 	.then(data => {
-			// 		// data为一个数组
-			// 		// 数组第一项为错误信息 即为 fail 回调
-			// 		// 第二项为返回数据
-			// 		var [err, res] = data;
-			// 		console.log(res.data);
-			// 	})
+			console.log(this.notebooks)
 		},
 		onPullDownRefresh() {
 			console.log('refresh');
@@ -70,12 +54,20 @@
 				uni.stopPullDownRefresh();
 			}, 1000);
 		},
+		onHide: function() {
+			uni.setStorage({
+				key: "notebooks",
+				data: this.notebooks,
+			})
+			console.log('App Hide')
+		},
 		methods: {
 			imageError: function(e) {
 				console.error('image发生error事件，携带值为' + e.detail.errMsg)
 			},
 			actionsClick() {},
 			open() {
+
 				this.$refs.popup.open()
 			},
 			/**
@@ -93,8 +85,8 @@
 			 * @param {Object} value
 			 */
 			confirm(value) {
-				let result = value.match(/^(?:(?:http(?:s)?:\/\/)?github.com\/)?([\w-]+)\/([\w-]+)$/mi)
-				if (!result) {
+				let [url, userName, repo] = value.match(/^(?:(?:http(?:s)?:\/\/)?github.com\/)?([\w-]+)\/([\w-]+)$/mi)
+				if (!url) {
 					uni.showToast({
 						title: '不合法地址',
 						duration: 1500,
@@ -103,20 +95,51 @@
 					return
 				}
 				uni.request({
-						url: `https://api.github.com/users/${result[1]}`,
-						header: {
-							'Accept': 'application/vnd.github.v3+json' //自定义请求头信息
-						}
+						url: `${this.$api}/users/${userName}`,
 					})
 					.then(data => {
-						// data为一个数组
-						// 数组第一项为错误信息 即为 fail 回调
-						// 第二项为返回数据
-						var [err, res] = data;
-						console.log(res.data);
+						// // data为一个数组
+						// // 数组第一项为错误信息 即为 fail 回调
+						// // 第二项为返回数据
+						let [err, res] = data;
+						// console.log(data);
+						if (res) {
+							switch (res.statusCode) {
+								case 200:
+									if (!this.notebooks[url]) {
+										this.notebooks[url] = {
+											collected: false,
+											userName,
+											repo,
+										};
+										this.$forceUpdate()
+										uni.showToast({
+											title: '添加成功',
+											duration: 1500,
+										});
+									} else {
+										uni.showToast({
+											title: '仓库已存在',
+											duration: 1500,
+										});
+									}
+									break;
+								case 404:
+									uni.showToast({
+										title: '地址不存在',
+										duration: 1500,
+										icon: "error"
+									});
+									break;
+								default:
+							}
+						} else {
+							uni.showModal({
+								content: 'error',
+								showCancel: false
+							});
+						}
 					})
-				console.log(result[1])
-				console.log(result[2])
 				this.$refs.popup.close()
 			}
 		}
