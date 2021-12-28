@@ -3,7 +3,17 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "阅读"
+				"navigationBarTitleText": "阅读",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "\ue563",
+							"fontSrc": "/static/uni.ttf",
+							"fontSize": "22px",
+							"color": "#6f6f6f"
+						}]
+					}
+				}
 			}
 		},
 		{
@@ -20,7 +30,7 @@
 							"color": "#6f6f6f"
 						}]
 					}
-				}	
+				}
 			}
 		},
 		{

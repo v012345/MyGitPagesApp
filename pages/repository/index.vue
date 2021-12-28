@@ -112,7 +112,7 @@
 											userName,
 											repo,
 										};
-										this.$forceUpdate()
+										// this.$forceUpdate()
 										uni.showToast({
 											title: '添加成功',
 											duration: 1500,
